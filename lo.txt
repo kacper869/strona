@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Liceum Ogólnokształcące</title>
+  <style>
+    /* Body i podstawowe style */
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f9fafc;
+      color: #333;
+      line-height: 1.6;
+      display: flex;
+      justify-content: center;
+      position: relative;
+      min-height: 100vh;
+      overflow-x: hidden;
+      padding: 0 120px; /* miejsce na ozdoby po bokach */
+    }
+
+    /* Ozdoby po bokach */
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0;
+      width: 100px;
+      height: 100vh;
+      background: linear-gradient(180deg, #002b5c, #004080);
+      opacity: 0.15;
+      z-index: 500;
+      border-radius: 0 30px 30px 0;
+    }
+
+    body::after {
+      right: 0;
+      border-radius: 30px 0 0 30px;
+      background: linear-gradient(180deg, #004080, #002b5c);
+      left: auto;
+    }
+
+    body::before {
+      left: 0;
+    }
+
+    /* Kontener strony */
+    #container {
+      max-width: 900px;
+      width: 100%;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      padding-bottom: 3rem;
+      z-index: 1000;
+      position: relative;
+    }
+
+    /* Nagłówek */
+    header {
+      background-color: #002b5c;
+      color: white;
+      text-align: center;
+      padding: 1.5rem 0;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+      border-radius: 12px 12px 0 0;
+    }
+
+    /* Pasek nawigacji - ulepszony */
+    nav {
+      background: linear-gradient(90deg, #004080, #0066cc);
+      display: flex;
+      justify-content: center;
+      position: sticky;
+      top: 0;
+      z-index: 1100;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+      border-radius: 0 0 12px 12px;
+      margin-bottom: 1.5rem;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 1.8rem;
+      margin: 0;
+      padding: 0.9rem 1rem;
+    }
+
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-weight: 700;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      transition: background 0.35s ease, box-shadow 0.35s ease, transform 0.2s ease;
+      user-select: none;
+      font-size: 1.05rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    nav ul li a:hover,
+    nav ul li a:focus {
+      background-color: #0090ff;
+      box-shadow: 0 6px 12px rgba(0,144,255,0.6);
+      transform: scale(1.1);
+      outline: none;
+    }
+
+    /* Sekcja Home */
+    #home {
+      text-align: center;
+      padding: 3rem 2rem 2rem 2rem;
+      max-width: 900px;
+      margin: 0 auto 2rem auto;
+      border-radius: 12px;
+    }
+
+    #home h2 {
+      color: #002b5c;
+      margin-bottom: 0.5rem;
+    }
+
+    #home p {
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Dynamiczna sekcja */
+    #dynamic-content {
+      padding: 2rem 2.5rem;
+      max-width: 900px;
+      margin: 0 auto 2rem auto;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      display: none;
+      line-height: 1.5;
+    }
+
+    /* Nagłówki */
+    h2 {
+      color: #002b5c;
+      margin-bottom: 1rem;
+      border-bottom: 3px solid #004080;
+      padding-bottom: 0.4rem;
+      font-weight: 800;
+    }
+
+    h3 {
+      color: #004080;
+      margin-top: 2rem;
+      margin-bottom: 0.8rem;
+      font-weight: 700;
+    }
+
+    /* Listy */
+    p, li {
+      font-size: 1rem;
+    }
+
+    ul {
+      padding-left: 1.5rem;
+      margin-top: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    ul.news-list {
+      list-style-type: disc;
+      padding-left: 1.3rem;
+    }
+
+    ul.news-list li {
+      margin-bottom: 0.8rem;
+    }
+
+    /* Info-box */
+    .info-box {
+      background-color: #e7f0fd;
+      border-left: 6px solid #004080;
+      padding: 1rem 1.5rem;
+      margin: 1.5rem 0;
+      border-radius: 8px;
+      font-style: italic;
+      color: #003366;
+      box-shadow: inset 0 0 8px #c7d7f8;
+    }
+
+    /* Tabela */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+      font-size: 0.95rem;
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 0.5rem 0.75rem;
+      text-align: center;
+      transition: background-color 0.3s ease;
+    }
+
+    th {
+      background-color: #004080;
+      color: white;
+      font-weight: 700;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    tr:hover {
+      background-color: #d0e3ff;
+    }
+
+    caption {
+      font-weight: 700;
+      margin-bottom: 0.7rem;
+      font-size: 1.2rem;
+      color: #002b5c;
+    }
+
+    /* Obrazki */
+    img {
+      border-radius: 10px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+      max-width: 100%;
+      height: auto;
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+      transition: transform 0.3s ease;
+    }
+
+    img:hover {
+      transform: scale(1.02);
+    }
+
+    /* Ikony sekcji */
+    .section-icon {
+      font-size: 1.3rem;
+      margin-right: 0.5rem;
+      vertical-align: middle;
+    }
+
+  </style>
+</head>
+<body>
+  <div id="container">
+    <header>
+      <h1>Liceum Ogólnokształcące im. ks. Piotra Skargi</h1>
+    </header>
+
+    <nav>
+      <ul>
+        <li><a href="#" onclick="showHome()" aria-label="Strona Główna">🏠 Strona Główna</a></li>
+        <li><a href="#" onclick="loadContent('about')" aria-label="O Szkole">🏫 O Szkole</a></li>
+        <li><a href="#" onclick="loadContent('news')" aria-label="Aktualności">📰 Aktualności</a></li>
+        <li><a href="#" onclick="loadContent('teachers')" aria-label="Nauczyciele">👩‍🏫 Nauczyciele</a></li>
+        <li><a href="#" onclick="loadContent('timetable')" aria-label="Plan Lekcji">📅 Plan Lekcji</a></li>
+        <li><a href="#" onclick="loadContent('gallery')" aria-label="Galeria">🖼️ Galeria</a></li>
+        <li><a href="#" onclick="loadContent('contact')" aria-label="Kontakt">📞 Kontakt</a></li>
+      </ul>
+    </nav>
+
+    <section id="home" tabindex="0">
+      <h2>Witamy w naszym liceum!</h2>
+      <p>Nowoczesne podejście, tradycja i wysoka jakość nauczania – to nas wyróżnia.</p>
+      <img src="download/skarga.jpg" alt="Zdjęcie szkoły" />
+    </section>
+
+    <section id="dynamic-content" tabindex="0"></section>
+  </div>
+
+  <script>
+    function showHome() {
+      document.getElementById("home").style.display = "block";
+      const dynamic = document.getElementById("dynamic-content");
+      dynamic.style.display = "none";
+      dynamic.innerHTML = '';
+    }
+
+    function loadContent(section) {
+      const content = {
+        about: `
+          <h2><span class="section-icon">🏫</span>O Szkole</h2>
+          <p>Nasze liceum oferuje bogatą ofertę edukacyjną, doświadczoną kadrę nauczycielską i przyjazną atmosferę.</p>
+
+          <h3>🎯 Misja szkoły</h3>
+          <div class="info-box">
+            Naszą misją jest wszechstronne kształcenie młodzieży, rozwijanie ich pasji oraz przygotowanie do dalszej edukacji i życia zawodowego.
+          </div>
+
+          <h3>📚 Oferta edukacyjna</h3>
+          <ul>
+            <li>Klasy o profilu matematyczno-przyrodniczym</li>
+            <li>Klasy o profilu humanistycznym</li>
+            <li>Klasy o profilu biznesowym</li>
+            <li>Zajęcia dodatkowe: języki obce, informatyka, zajęcia sportowe</li>
+          </ul>
+
+          <h3>🏆 Osiągnięcia</h3>
+          <p>Nasza szkoła regularnie zdobywa wysokie miejsca w konkursach przedmiotowych, olimpiadach oraz zawodach sportowych, co potwierdza wysoki poziom nauczania.</p>
+
+          <h3>🌟 Atmosfera i wartości</h3>
+          <p>Dbamy o przyjazną i bezpieczną atmosferę, wspieramy rozwój osobisty uczniów oraz aktywne uczestnictwo w życiu szkoły i społeczności lokalnej.</p>
+
+          <h3>💡 Współpraca i rozwój</h3>
+          <p>Szkoła współpracuje z lokalnymi firmami, uczelniami wyższymi oraz organizacjami pozarządowymi, organizując praktyki i warsztaty dla uczniów.</p>
+        `,
+        news: `
+          <h2><span class="section-icon">📰</span>Aktualności</h2>
+          <ul class="news-list">
+            <li><strong>14.06.2025</strong> – Zakończenie roku szkolnego, uroczysta gala o godz. 10:00 w auli szkoły.</li>
+            <li><strong>01.09.2025</strong> – Rozpoczęcie nowego roku szkolnego, spotkanie informacyjne dla rodziców o godz. 17:00.</li>
+            <li><strong>05.10.2025</strong> – Dzień Otwarty dla kandydatów – prezentacje profili klas i warsztaty tematyczne.</li>
+            <li><strong>15-20.11.2025</strong> – Egzaminy próbne z matematyki i języka polskiego dla klas trzecich.</li>
+            <li><strong>25.11.2025</strong> – Wycieczka edukacyjna do Krakowa – zapisy u wychowawców.</li>
+            <li><strong>10.12.2025</strong> – Konkurs wiedzy o historii Polski – eliminacje szkolne.</li>
+            <li><strong>22.12.2025</strong> – Koncert świąteczny – zapraszamy całą społeczność szkolną.</li>
+          </ul>
+        `,
+        teachers: `
+          <h2><span class="section-icon">👩‍🏫</span>Nauczyciele</h2>
+          <ul>
+            <li>Anna Bednarz – Matematyka</li>
+            <li>Agnieszka Kwaśniak – Język Polski</li>
+            <li>Anna Marć – Biologia</li>
+            <li>Damian Zegar – Informatyka</li>
+            <li>Mateusz Wesołowski – Biznes i zarządzanie</li>
+            <li>Grzegorz Pach – Chemia</li>
+            <li>Ryszard Kopciuszyński – Fizyka</li>
+            <li>Jan Flis – Geografia</li>
+            <li>Wojciech Sala – Historia</li>
+            <li>Przemysław Basak – Historia i teraźniejszość</li>
+            <li>Anna Kasperska-Kołek – Język angielski</li>
+            <li>Jolanta Ziobro – Język rosyjski</li>
+            <li>Jadwiga Stysiał – Religia</li>
+            <li>Roman Dziedzic – Wychowanie fizyczne</li>
+          </ul>
+        `,
+        timetable: `
+          <h2><span class="section-icon">📅</span>Plan Lekcji</h2>
+          <p>Plan lekcji zostanie wkrótce opublikowany.</p>
+        `,
+        gallery: `
+          <h2><span class="section-icon">🖼️</span>Galeria</h2>
+          <p>Zapraszamy do obejrzenia zdjęć z życia szkoły i wydarzeń.</p>
+          <img src="download/school_event1.jpg" alt="Zdjęcie z wydarzenia szkolnego" />
+          <img src="download/school_event2.jpg" alt="Zdjęcie z wydarzenia szkolnego" />
+        `,
+        contact: `
+          <h2><span class="section-icon">📞</span>Kontakt</h2>
+          <p>Adres: ul. Szkolna 12, 00-123 Miasto</p>
+          <p>Telefon: 123-456-789</p>
+          <p>Email: kontakt@liceumskarga.pl</p>
+          <p>Godziny pracy sekretariatu: 8:00 - 16:00</p>
+        `
+      };
+
+      document.getElementById("home").style.display = "none";
+      const dynamic = document.getElementById("dynamic-content");
+      dynamic.style.display = "block";
+      dynamic.innerHTML = content[section] || "<p>Brak zawartości.</p>";
+      dynamic.focus();
+    }
+
+    // Na start pokazujemy stronę główną
+    showHome();
+  </script>
+</body>
+</html>
+
